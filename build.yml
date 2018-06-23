@@ -1,0 +1,9 @@
+# NeON Build File (http://github.com/c4s4/neon)
+
+extends:
+- c4s4/build/slides.yml
+
+properties:
+  TITLE:   "L'Outil de Build NeON"
+  OPTIONS: "{ratio: '4:3'}"
+  #OPTIONS: "{ratio: '16:9'}"

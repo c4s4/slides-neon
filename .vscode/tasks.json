@@ -1,0 +1,58 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "neon -info",
+            "type": "shell",
+            "command": "neon",
+            "args": [
+                "-info"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "neon",
+            "type": "shell",
+            "command": "neon",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "neon slides",
+            "type": "shell",
+            "command": "neon",
+            "args": [
+                "slides"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            }
+        },
+        {
+            "label": "neon publish",
+            "type": "shell",
+            "command": "neon",
+            "args": [
+                "publish"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true
+            }
+        }
+    ]
+}
