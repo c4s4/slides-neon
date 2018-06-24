@@ -39,7 +39,8 @@
                 "echo": true,
                 "reveal": "always",
                 "focus": true
-            }
+            },
+            "problemMatcher": []
         },
         {
             "label": "neon publish",
