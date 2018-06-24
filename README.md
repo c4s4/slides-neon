@@ -180,3 +180,106 @@ targets:
 
 ---
 
+### Les Propriétés du Build
+
+Les propriétés du build sont l'équivalent des variables d'un langage de programmation. Elles sont définies dans l'entrée *properties* du build file. On peut définir comme propriété tous les types YAML :
+
+```yaml
+properties:
+  STRING:  'This is a string'
+  OTHER:   '1'
+  INTEGER: 42
+  FLOAT:   4.2
+  LIST:    [1, 1, 2, 3, 5, 8]
+  MAP:
+    one:   1
+    two:   2
+    three: 3
+```
+
+Une propriété peut faire référence à une autre propriété :
+
+```yaml
+properties:
+  NAME:      'test'
+  BUILD_DIR: 'build'
+  ARCHIVE:   '={BUILD_DIR}/={NAME}.zip'
+```
+
+---
+
+### Références à des propriétés
+
+Il y a deux manières de référencer une propriété :
+
+- En tant que chaîne de caractères sous la forme `={PROPRIETE}`.
+- En tant que valeur ayant le type de la propriété sous la forme `=PROPRIETE`.
+
+Ainsi, le build file suivant :
+
+```yaml
+properties:
+  LIST: ['foo', 'bar']
+
+targets:
+
+  test:
+    steps:
+    - print: 'LIST: ={LIST}'
+    - for: e
+      in:  =LIST
+      do:
+      - print: =e
+```
+
+Affiche la liste puis chacun de ses éléments.
+
+---
+
+### Propriétés prédéfinies
+
+NeON définit des propriétés par défaut :
+
+```yaml
+targets:
+
+  test:
+    steps:
+    - print: 'BASE: ={_BASE}'
+    - print: 'HERE: ={_HERE}'
+    - print: 'OS:   ={_OS}'
+    - print: 'ARCH: ={_ARCH}'
+    - print: 'NCPU: ={_NCPU}'
+```
+
+Produit la sortie suivante :
+
+```bash
+$ neon test
+----------------------------------------------------------------------- test --
+BASE: /home/casa/dsk
+HERE: /home/casa/dsk
+OS:   linux
+ARCH: amd64
+NCPU: 2
+OK
+```
+
+---
+
+Build Targets
+-------------
+
+Les cibles du build sont comparables à des fonctions. On les passe sur la ligne de commande. Ainsi avec le build file suivant :
+
+```yaml
+properties:
+  BUILD_DIR: 'build'
+
+targets:
+
+  clean:
+    doc: Clean generated files
+    steps:
+    - delete: =BUILD_DIR
+```
