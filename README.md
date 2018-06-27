@@ -283,3 +283,46 @@ targets:
     steps:
     - delete: =BUILD_DIR
 ```
+
+Si on tape `neon clean`:
+
+```bash
+$ neon clean
+Build /home/casa/dsk/build.yml
+----------------------------------------------------------------------- clean --
+OK
+```
+
+Nous voyons que la cible *clean* a été exécutée.
+
+---
+
+Il est aussi possible d'exécuter plusieurs cibles en les passant sur la ligne de commande.
+
+D'autre part, on peut déclarer une cible par défaut avec l'entrée `default: target` à la racine du build file, comme dans l'exemple suivant qui déclare la cible *clean* par défaut:
+
+```yaml
+default: clean
+
+properties:
+  BUILD_DIR: 'build'
+
+targets:
+
+  clean:
+    doc: Clean generated files
+    steps:
+    - delete: =BUILD_DIR
+```
+
+On peut donc invoquer NeON sans passer de cible, comme suit :
+
+```bash
+$ neon
+Build /home/casa/dsk/build.yml
+----------------------------------------------------------------------- clean --
+OK
+```
+
+---
+
