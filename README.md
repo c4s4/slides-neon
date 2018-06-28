@@ -475,3 +475,63 @@ Il est possible de définir ses propres builtins dans un source Anko et de les c
 
 ---
 
+Héritage de build
+-----------------
+
+On peut étendre un fichier de build en ajoutant une déclaration extends. Supposons que nous ayons le fichier de build suivant pour définir le répertoire du build :
+
+```yaml
+properties:
+  BUILD_DIR: 'build'
+
+targets:
+
+  clean:
+    doc: Clean generated files
+    steps:
+    - delete: '=BUILD_DIR'
+```
+
+Nous pouvons réutiliser ce fichier de build dans un autre de la manière suivante :
+
+```yaml
+extends: ./buildir.yml
+```
+
+Dans ce fichier de build, le propriété *BUILD_DIR* est définie et la cible *clean* peut être invoquée. Nous pouvons ainsi réutiliser les fichiers de build existant.
+
+---
+
+### Surcharge
+
+Nous pouvons aussi surcharger dans le fils les propriétés définies dans le fichier de build parent. Ainsi pour changer le répertoire du build, nous pouvons écrire :
+
+```yaml
+extends: ./buildir.yml
+
+properties:
+  BUILD_DIR: 'target'
+```
+
+Nous pouvons aussi surcharger les cibles :
+
+```yaml
+extends: ./buildir.yml
+
+targets:
+
+  clean:
+    doc: Clean generated files and crate build directory
+    steps:
+    - super:
+    - mkdir: =BUILD_DIR
+```
+
+La tâche `super` permet ainsi d'invoquer la cible du parent.
+
+---
+
+Entrepôt NeON
+-------------
+
+Cet entrepôt se trouve par défaut dans le répertoire *~/.neon/*. On peut y installer des 
