@@ -34,9 +34,9 @@ En les utilisant et constatant leurs limites, j'ai rêvé d'un système de build
 
 - Indépendant du langage (non lié à *Java* comme peut l'être *Maven*).
 - Indépendant du système sur lequel on build (comme *Make* est lié à *Unix*).
-- Ayant des build files avec une syntaxe naturelle et légère (contrairement au *XML* de *Ant*).
+- Ayant des fichiers build avec une syntaxe naturelle et légère (contrairement au *XML* de *Ant*).
 - Rapide au lancement car on lance des builds des dizaines de fois par jour (pas comme *Maven*).
-- Permettant le partage facile des build files (par des entrepôts *Git*).
+- Permettant le partage facile des fichiers build (par des entrepôts *Git*).
 - Permettant d'étendre des builds files parents par héritage (comme on le fait en *Programmation Orienté Objet*).
 - Embarquant un langage de script pour être capable de coder des tâches complexes.
 
@@ -45,7 +45,7 @@ En les utilisant et constatant leurs limites, j'ai rêvé d'un système de build
 L'Ancêtre Bee
 -------------
 
-En 2006 je me suis lancé dans la conception de [Bee](https://github.com/c4s4/bee/), un outil de build qui répondait à cette liste de vœux. Il était implémenté en Ruby, le langage de script était donc Ruby lui même et la distribution des build files se faisait sous forme de *gemmes Ruby*.
+En 2006 je me suis lancé dans la conception de [Bee](https://github.com/c4s4/bee/), un outil de build qui répondait à cette liste de vœux. Il était implémenté en Ruby, le langage de script était donc Ruby lui même et la distribution des fichiers build se faisait sous forme de *gemmes Ruby*.
 
 Bee a été maintenu de 2006 à 2014 et a été utilisé dans nombre des projets chez OAB (une filière d'Orange pour laquelle j'ai travaillé 7 années).
 
@@ -63,16 +63,16 @@ La même année que j'arrêtais le développement de Bee, j'ai découvert le lan
 J'ai dû cependant attendre jusque fin *2016* avant de trouver une solution à deux problèmes auxquels je m'étais heurté lors de mes première tentatives de portage de Bee en *Go* :
 
 - Trouver un langage de script embarqué dans du *Go*. J'ai trouvé pour [Anko](https://github.com/mattn/anko) qui est une version scriptée du *Go*.
-- Pouvoir parser les build files en *Go*. Ils n'ont en effet pas une structure totalement prédéfinie et leur parsing nécessite la maîtrise de *l'introspection*, ce qui n'est pas une mince affaire en *Go* :o)
+- Pouvoir parser les fichiers build en *Go*. Ils n'ont en effet pas une structure totalement prédéfinie et leur parsing nécessite la maîtrise de *l'introspection*, ce qui n'est pas une mince affaire en *Go* :o)
 
 J'ai finalement commencé le développement fin 2016 et publié une première release début 2017.
 
 ---
 
-Format des build files
-----------------------
+Format des fichiers de build
+----------------------------
 
-Les build files sont au format *YAML* (pour *Yet Another Markup Language*). Ce format a l'avantage d'être naturel et léger. Par exemple, on écrira une liste de la manière suivante :
+Les fichiers de build sont au format *YAML* (pour *Yet Another Markup Language*). Ce format a l'avantage d'être naturel et léger. Par exemple, on écrira une liste de la manière suivante :
 
 ```yaml
 - Bilbo
@@ -123,7 +123,7 @@ Ainsi les nombres sont écrits comme des nombres, les dates sont écrites au for
 
 ### Conseils YAML
 
-Pour éviter tout problème lors de l'écriture de build files (et de fichiers YAML plus généralement) :
+Pour éviter tout problème lors de l'écriture de fichiers de build (et de fichiers YAML plus généralement) :
 
 - On ne doit **pas indenter avec des tabulations** (c'est une faute de syntaxe en YAML).
 - Les chaînes de caractères comportant un caractère *deux points* doivent être entourées de guillemets, sans qui elles sont considérées comme un dictionnaire.
@@ -134,14 +134,14 @@ Bien sûr la syntaxe de YAML est bien plus riche que celle décrite ici, et je v
 
 ---
 
-Structure des Build Files
--------------------------
+Structure des fichiers de build
+-------------------------------
 
-Un build file est un dictionnaire YAML pouvant comporter les entrées suivantes :
+Un fichier de build est un dictionnaire YAML pouvant comporter les entrées suivantes :
 
 - **doc** pour documenter le build.
 - **default** indique la cible par défaut du build.
-- **extends** indique les build files parents.
+- **extends** indique les fichiers de build parents.
 - **properties** définit les propriétés du build.
 - **environment** définit les variables d'environnement du build.
 - **targets** comporte les cibles du build (comme *clean* ou *compile* par exemple).
@@ -150,7 +150,7 @@ Il existe d'autres entrées de moindre importance, comme **repository**, **conte
 
 ---
 
-### Exemple de Build File
+### Exemple de fichier build
 
 ```yaml
 default: test
@@ -182,7 +182,7 @@ targets:
 
 ### Les Propriétés du Build
 
-Les propriétés du build sont l'équivalent des variables d'un langage de programmation. Elles sont définies dans l'entrée *properties* du build file. On peut définir comme propriété tous les types YAML :
+Les propriétés du build sont l'équivalent des variables d'un langage de programmation. Elles sont définies dans l'entrée *properties* du fichier build. On peut définir comme propriété tous les types YAML :
 
 ```yaml
 properties:
@@ -215,7 +215,7 @@ Il y a deux manières de référencer une propriété :
 - En tant que chaîne de caractères sous la forme `={PROPRIETE}`.
 - En tant que valeur ayant le type de la propriété sous la forme `=PROPRIETE`.
 
-Ainsi, le build file suivant :
+Ainsi, le fichier de build suivant :
 
 ```yaml
 properties:
@@ -267,10 +267,10 @@ OK
 
 ---
 
-Build Targets
--------------
+Cibles du fichier de build
+--------------------------
 
-Les cibles du build sont comparables à des fonctions. On les passe sur la ligne de commande. Ainsi avec le build file suivant :
+Les cibles du build sont comparables à des fonctions. On les passe sur la ligne de commande. Ainsi avec le fichier de build suivant :
 
 ```yaml
 properties:
@@ -299,7 +299,7 @@ Nous voyons que la cible *clean* a été exécutée.
 
 Il est aussi possible d'exécuter plusieurs cibles en les passant sur la ligne de commande.
 
-D'autre part, on peut déclarer une cible par défaut avec l'entrée `default: target` à la racine du build file, comme dans l'exemple suivant qui déclare la cible *clean* par défaut:
+D'autre part, on peut déclarer une cible par défaut avec l'entrée `default: target` à la racine du fichier de build, comme dans l'exemple suivant qui déclare la cible *clean* par défaut:
 
 ```yaml
 default: clean
@@ -315,14 +315,163 @@ targets:
     - delete: =BUILD_DIR
 ```
 
-On peut donc invoquer NeON sans passer de cible, comme suit :
+On peut alors invoquer NeON sans passer de cible.
+
+Une cible d'un fichier de build comporte les champs suivants :
+
+- **doc** permet de documenter la cible et est affiché avec l'option *-info*.
+- **depends** indique les cibles à exécuter auparavant.
+- **steps** liste les étapes de la cible (ou les *tâches* qui la constituent).
+
+Les tâches sont comparables aux instructions d'un programme. Elles peuvent être de trois types :
+
+---
+
+### Tâches NeON
+
+Ces tâches sont prédéfinies dans le moteur NeON, elles permettent de gérer les fichiers (copie, effacement, déplacement), les archives (créer et décompresser des fichiers *tar*, *targz* et *zip*), les répertoires (création, effacement) ou des liens. Ceci permet de réaliser ces opérations de manière indépendante du système d'exploitation.
+
+Par exemple, pour effacer tous les fichiers *.so* du répertoire *build*, on pourrait écrire :
+
+```yaml
+targets:
+
+  delete:
+    doc: Delete object files
+    steps:
+    - delete: '**/*.so'
+      dir:    'build'
+```
+
+Il existe aussi des tâches logiques qui permettent de réaliser des tests ou d'itérer sur des collections. 
+
+---
+
+#### Tâches NeON (suite)
+
+Par exemple, pour itérer sur tous les fichiers *.md* du répertoire *md*, on peut écrire :
+
+```yaml
+targets:
+
+  pdf:
+    doc: Generate PDF files
+    steps:
+    - for: 'file'
+      in:  'find("md", "*.md")'
+      do:
+      - $: ['md2pdf', '-o', 'build/={file}.pdf', 'md/={file}']
+```
+
+Il est aussi possible de gérer les erreurs. Par exemple, pour exécuter une commande et récupérer la main en cas d'erreur, on peut écrire :
+
+```yaml
+targets:
+
+  command:
+    doc: Try to run a command
+    steps:
+    - try:
+      - $: 'command that might fail'
+      catch:
+      - throw: 'There was an error running command'
+```
+
+---
+
+#### Tâches NeON (suite)
+
+Pour lister, en ligne de commande, toutes les tâches NeON disponibles, on peut taper `neon -tasks`. Pour obtenir de l'aide sur une tâche particulière, on tapera :
 
 ```bash
-$ neon
-Build /home/casa/dsk/build.yml
------------------------------------------------------------------------ clean --
-OK
+$ neon -task time
+Record duration to run a block of steps.
+
+Arguments:
+
+- time: steps we want to measure execution duration (steps).
+- to: property to store duration in seconds as a float, if not set, duration is
+  printed on the console (string, optional).
+
+Examples:
+
+    # print duration to say hello
+    - time:
+      - print: 'Hello World!'
+      to: duration
+    - print: 'duration: ={duration}s'
 ```
+
+On peut aussi obtenir de l'aide pour toutes les tâches disponibles [sur la page de référence des tâches](https://github.com/c4s4/neon/blob/master/doc/reference.md).
+
+---
+
+#### Les tâches de fichiers
+
+Nombre de tâches NeON travaillent sur des fichiers. Par exemple, la tâche *copy* :
+
+```yaml
+- copy:  ['**/*.txt', '**/*.md']
+  dir:   'txt'
+  todir: 'dst'
+  flat:  true
+```
+
+Le champ *copy* définit la liste des fichiers à copier avec des *globs*, qui sont semblables à ceux utilisés en ligne de commande :
+
+- **\*** pour sélectionner un nombre quelconque de caractères.
+- **?** pour sélectionner un caractère. Donc `?.txt` sélectionnera *1.txt* mais pas *12.txt*.
+- **\*\*** pour sélectionner un nombre quelconque de répertoires et sous-répertoires. Donc `**/*.txt` sélectionnera *foo.txt*, *foo/bar.txt* et tous les fichiers *.txt* dans les sous-répertoires.
+
+Le champ **dir** indique le répertoire racine des globs, **exclude** liste les globs des fichiers à exclure, **todir** ou **tofile** indiquent la destination de la copie et **flat** indique si la copie ramène les fichiers à la racine du répertoire de destination.
+
+---
+
+### Les tâches shell
+
+Les tâches *shell* exécutent des commande système. Par exemple, pour exécuter la commande *ls*, on pourrait écrire :
+
+```yaml
+targets:
+
+  shell:
+    steps:
+    - $: 'ls'
+```
+
+Pour exécuter des commandes qui soient compatibles avec toutes les plateformes, il est recommandé d'écrire ses tâches sous forme de listes :
+
+```yaml
+targets:
+
+  shell:
+    steps:
+    - $: ['java', '-jar', 'my.jar', 'Hello World!']
+```
+
+Ainsi on évite d'invoquer les commandes en passant par *cmd.exe* sous Windows, qui gère très mal les arguments comportant des espaces. Il est ainsi possible d'écrire des tâches *shell* qui sont portables entre plateformes.
+
+---
+
+### Les tâches script
+
+NeON embarque une VM Anko qui permet d'écrire des scripts dans les fichiers de build. Anko est un langage de script très proche du *Go*. Ceci permet de réaliser des tâches complexes indépendantes de la plateforme. D'autre part, NeON définit des fonctions utiles pour un build, les *builtins*.
+
+Par exemple, on peut rechercher des fichiers avec le builtin *find* et les filter avec *filter*. Ainsi pour sélectionner tous les fichiers *txt* saufs ceux du répertoire *build*, on pourra écrire :
+
+```yaml
+targets:
+
+  script:
+    steps:
+    - 'files = filter(find(".", "**/*.txt"), "build/**/*")'
+```
+
+La propriété *files* contiendra une liste des fichiers trouvés.
+
+On peut lister tous les builtins avec la commande `neon -builtins` et obtenir de l'aide sur l'un d'eux avec `neon -builtin find` par exemple.
+
+Il est possible de définir ses propres builtins dans un source Anko et de les charger avec une déclaration *context*. Par exemple, pour charger le fichier *myscript.ank* dans le contexte du build, on écrira `context: myscript.ank`.
 
 ---
 
