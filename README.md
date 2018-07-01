@@ -28,15 +28,15 @@ Projet sur Github sous licence Apache 2.0 : http://github.com/c4s4/neon
 Pourquoi NeON ?
 ---------------
 
-Il existe bien des systèmes de build, pourquoi en concevoir un autre ? Parce que je n'étais pas satisfait de ceux que j'ai pu utiliser : **make**, **ant**, **maven**, **rake**.
+Il existe bien des systèmes de build, pourquoi en concevoir un ènième ? Parce que je n'étais pas satisfait de ceux que j'ai pu utiliser : **make**, **ant**, **maven**, **rake**.
 
 En les utilisant et constatant leurs limites, j'ai rêvé d'un système de build qui aurait les caractéristiques suivantes :
 
 - Indépendant du langage (non lié à *Java* comme peut l'être *Maven*).
 - Indépendant du système sur lequel on build (comme *Make* est lié à *Unix*).
-- Ayant des fichiers build avec une syntaxe naturelle et légère (contrairement au *XML* de *Ant*).
+- Ayant des fichiers de build avec une syntaxe naturelle et légère (contrairement au *XML* de *Ant*).
 - Rapide au lancement car on lance des builds des dizaines de fois par jour (pas comme *Maven*).
-- Permettant le partage facile des fichiers build (par des entrepôts *Git*).
+- Permettant le partage facile des fichiers de build (par des entrepôts *Git*).
 - Permettant d'étendre des builds files parents par héritage (comme on le fait en *Programmation Orienté Objet*).
 - Embarquant un langage de script pour être capable de coder des tâches complexes.
 
@@ -45,11 +45,11 @@ En les utilisant et constatant leurs limites, j'ai rêvé d'un système de build
 L'Ancêtre Bee
 -------------
 
-En 2006 je me suis lancé dans la conception de [Bee](https://github.com/c4s4/bee/), un outil de build qui répondait à cette liste de vœux. Il était implémenté en Ruby, le langage de script était donc Ruby lui même et la distribution des fichiers build se faisait sous forme de *gemmes Ruby*.
+En 2006 je me suis lancé dans la conception de [Bee](https://github.com/c4s4/bee/), un outil de build qui répondait à cette liste de vœux. Il était implémenté en Ruby, le langage de script était donc Ruby lui même et la distribution des fichiers de build se faisait sous forme de *gemmes Ruby*.
 
-Bee a été maintenu de 2006 à 2014 et a été utilisé dans nombre des projets chez OAB (une filière d'Orange pour laquelle j'ai travaillé 7 années).
+Bee a été maintenu de 2006 à 2014 et a été utilisé dans nombre des projets chez OAB (une filière d'Orange pour laquelle j'ai travaillé 7 années) et ailleurs.
 
-J'ai finalement abandonné le projet suite à de grosses difficultés à la maintenir : il avait commencé sur Ruby *1.8.6* et chaque nouvelle version de Ruby obligeait à des adaptations dépendantes de la version.
+J'ai finalement abandonné le projet suite à de grosses difficultés à le maintenir : il avait commencé sur Ruby *1.8.6* et chaque nouvelle version de Ruby obligeait à des adaptations dépendantes de la version.
 
 D'autre part, l'installation de la machine virtuelle Ruby était un frein sérieux à son adoption.
 
@@ -58,12 +58,12 @@ D'autre part, l'installation de la machine virtuelle Ruby était un frein série
 Les débuts de NeON
 ------------------
 
-La même année que j'arrêtais le développement de Bee, j'ai découvert le langage *Go*. J'y ai vite vu une solution aux problèmes de Bee : pas de VM à installer et pas de problèmes de soucis de maintenance au fil des versions de *Go*.
+La même année que j'arrêtais le développement de Bee, j'ai découvert le langage *Go*. J'y ai vite vu une solution aux problèmes de Bee : pas de VM à installer et pas de soucis de maintenance au fil des versions de *Go*.
 
 J'ai dû cependant attendre jusque fin *2016* avant de trouver une solution à deux problèmes auxquels je m'étais heurté lors de mes première tentatives de portage de Bee en *Go* :
 
-- Trouver un langage de script embarqué dans du *Go*. J'ai trouvé pour [Anko](https://github.com/mattn/anko) qui est une version scriptée du *Go*.
-- Pouvoir parser les fichiers build en *Go*. Ils n'ont en effet pas une structure totalement prédéfinie et leur parsing nécessite la maîtrise de *l'introspection*, ce qui n'est pas une mince affaire en *Go* :o)
+- Trouver un langage de script embarqué dans du *Go*. J'ai opté pour [Anko](https://github.com/mattn/anko) qui est une version scriptée du *Go*.
+- Pouvoir parser les fichiers de build en *Go*. Ils n'ont en effet pas une structure totalement prédéfinie et leur parsing nécessite la maîtrise de *l'introspection*, ce qui n'est pas une mince affaire en *Go* :o)
 
 J'ai finalement commencé le développement fin 2016 et publié une première release début 2017.
 
@@ -72,7 +72,7 @@ J'ai finalement commencé le développement fin 2016 et publié une première re
 Format des fichiers de build
 ----------------------------
 
-Les fichiers de build sont au format *YAML* (pour *Yet Another Markup Language*). Ce format a l'avantage d'être naturel et léger. Par exemple, on écrira une liste de la manière suivante :
+Les fichiers de build sont au format *YAML* (pour *YAML Ain't Markup Language*). Ce format a l'avantage d'être naturel et léger. Par exemple, on écrira une liste de la manière suivante :
 
 ```yaml
 - Bilbo
@@ -89,7 +89,7 @@ frodo: hobbit
 galadriel: elfe
 ```
 
-Il existe aussi une forme compacte :
+Il existe aussi une forme compacte pour les listes et les dictionnaires :
 
 ```yaml
 list: [Bilbo, Frodo]
@@ -117,7 +117,7 @@ strings:
   - '2015-10-21'
 ```
 
-Ainsi les nombres sont écrits comme des nombres, les dates sont écrites au format ISO, les booléens sont *true* et *false* et tout le reste sont des chaînes de caractères. On peut forcer le type *chaîne de caractères* en entourant de guillemets. Ainsi `"123"` sera une chaînes de caractères et non un nombre.
+Ainsi les nombres sont écrits comme des nombres, les dates sont écrites au format ISO, les booléens sont *true* et *false* et tout le reste sont des chaînes de caractères. On peut forcer le type *chaîne de caractères* en entourant de guillemets (simples ou doubles). Ainsi `"123"` sera une chaînes de caractères et non un nombre.
 
 ---
 
@@ -126,7 +126,7 @@ Ainsi les nombres sont écrits comme des nombres, les dates sont écrites au for
 Pour éviter tout problème lors de l'écriture de fichiers de build (et de fichiers YAML plus généralement) :
 
 - On ne doit **pas indenter avec des tabulations** (c'est une faute de syntaxe en YAML).
-- Les chaînes de caractères comportant un caractère *deux points* doivent être entourées de guillemets, sans qui elles sont considérées comme un dictionnaire.
+- Les chaînes de caractères comportant un caractère *deux points* doivent être entourées de guillemets, sans quoi elles sont considérées comme un dictionnaire.
 
 YAML est un format très semblable à JSON à tel point que JSON est un sous-ensemble de YAML (dans la spécification de YAML, pas dans celle de JSON :o)
 
@@ -150,7 +150,7 @@ Il existe d'autres entrées de moindre importance, comme **repository**, **conte
 
 ---
 
-### Exemple de fichier build
+### Exemple de fichier de build
 
 ```yaml
 default: test
@@ -182,7 +182,7 @@ targets:
 
 ### Les Propriétés du Build
 
-Les propriétés du build sont l'équivalent des variables d'un langage de programmation. Elles sont définies dans l'entrée *properties* du fichier build. On peut définir comme propriété tous les types YAML :
+Les propriétés du build sont l'équivalent des variables d'un langage de programmation. Elles sont définies dans l'entrée *properties* du fichier de build. On peut définir comme propriété tous les types YAML :
 
 ```yaml
 properties:
@@ -215,8 +215,6 @@ Il y a deux manières de référencer une propriété :
 - En tant que chaîne de caractères sous la forme `={PROPRIETE}`.
 - En tant que valeur ayant le type de la propriété sous la forme `=PROPRIETE`.
 
-Ainsi, le fichier de build suivant :
-
 ```yaml
 properties:
   LIST: ['foo', 'bar']
@@ -232,7 +230,13 @@ targets:
       - print: =e
 ```
 
-Affiche la liste puis chacun de ses éléments.
+Affiche la liste puis chacun de ses éléments :
+
+```bash
+LIST: [foo, bar]
+foo
+bar
+```
 
 ---
 
@@ -290,6 +294,7 @@ Si on tape `neon clean`:
 $ neon clean
 Build /home/casa/dsk/build.yml
 ----------------------------------------------------------------------- clean --
+Deleting 1 file(s) or directory(ies)
 OK
 ```
 
@@ -299,7 +304,7 @@ Nous voyons que la cible *clean* a été exécutée.
 
 Il est aussi possible d'exécuter plusieurs cibles en les passant sur la ligne de commande.
 
-D'autre part, on peut déclarer une cible par défaut avec l'entrée `default: target` à la racine du fichier de build, comme dans l'exemple suivant qui déclare la cible *clean* par défaut:
+D'autre part, on peut déclarer une cible par défaut avec l'entrée `default: target` à la racine du fichier de build, on peut alors invoquer NeON sans passer de cible :
 
 ```yaml
 default: clean
@@ -315,17 +320,15 @@ targets:
     - delete: =BUILD_DIR
 ```
 
-On peut alors invoquer NeON sans passer de cible.
-
 Une cible d'un fichier de build comporte les champs suivants :
 
 - **doc** permet de documenter la cible et est affiché avec l'option *-info*.
 - **depends** indique les cibles à exécuter auparavant.
 - **steps** liste les étapes de la cible (ou les *tâches* qui la constituent).
 
-Les tâches sont comparables aux instructions d'un programme. Elles peuvent être de trois types :
-
 ---
+
+Les tâches sont comparables aux instructions d'un programme. Elles peuvent être de trois types :
 
 ### Tâches NeON
 
@@ -343,39 +346,29 @@ targets:
       dir:    'build'
 ```
 
-Il existe aussi des tâches logiques qui permettent de réaliser des tests ou d'itérer sur des collections. 
-
 ---
 
 #### Tâches NeON (suite)
 
-Par exemple, pour itérer sur tous les fichiers *.md* du répertoire *md*, on peut écrire :
+Il existe aussi des tâches logiques qui permettent de réaliser des tests ou d'itérer sur des collections. Par exemple, pour itérer sur tous les fichiers *.md* du répertoire *md*, on peut écrire :
 
 ```yaml
-targets:
-
-  pdf:
-    doc: Generate PDF files
-    steps:
-    - for: 'file'
-      in:  'find("md", "*.md")'
-      do:
-      - $: ['md2pdf', '-o', 'build/={file}.pdf', 'md/={file}']
+- for: 'file'
+  in:  'find("md", "*.md")'
+  do:
+  - $: ['md2pdf', '-o', 'build/={file}.pdf', 'md/={file}']
 ```
 
 Il est aussi possible de gérer les erreurs. Par exemple, pour exécuter une commande et récupérer la main en cas d'erreur, on peut écrire :
 
 ```yaml
-targets:
-
-  command:
-    doc: Try to run a command
-    steps:
-    - try:
-      - $: 'command that might fail'
-      catch:
-      - throw: 'There was an error running command'
+- try:
+  - $: 'command that might fail'
+  catch:
+  - throw: 'There was an error running command'
 ```
+
+Ceci permet de corriger des erreurs ou de produire des messages plus explicites.
 
 ---
 
@@ -432,39 +425,29 @@ Le champ **dir** indique le répertoire racine des globs, **exclude** liste les 
 Les tâches *shell* exécutent des commande système. Par exemple, pour exécuter la commande *ls*, on pourrait écrire :
 
 ```yaml
-targets:
-
-  shell:
-    steps:
-    - $: 'ls'
+- $: 'ls'
 ```
 
 Pour exécuter des commandes qui soient compatibles avec toutes les plateformes, il est recommandé d'écrire ses tâches sous forme de listes :
 
 ```yaml
-targets:
-
-  shell:
-    steps:
-    - $: ['java', '-jar', 'my.jar', 'Hello World!']
+- $: ['java', '-jar', 'my.jar', 'Hello World!']
 ```
 
 Ainsi on évite d'invoquer les commandes en passant par *cmd.exe* sous Windows, qui gère très mal les arguments comportant des espaces. Il est ainsi possible d'écrire des tâches *shell* qui sont portables entre plateformes.
+
+C'est le cas pour les commande Git par exemple. On peut ainsi écrire des fichiers de build qui comportent des commandes système *et* sont portables entre plateformes (*Unix* et *Windows* en particulier).
 
 ---
 
 ### Les tâches script
 
-NeON embarque une VM Anko qui permet d'écrire des scripts dans les fichiers de build. Anko est un langage de script très proche du *Go*. Ceci permet de réaliser des tâches complexes indépendantes de la plateforme. D'autre part, NeON définit des fonctions utiles pour un build, les *builtins*.
+NeON embarque une VM Anko qui permet d'écrire des scripts dans les fichiers de build. Anko est un langage de script très proche du *Go* et permet de réaliser des tâches complexes indépendantes de la plateforme. D'autre part, NeON définit des fonctions utiles pour un build, les *builtins*.
 
-Par exemple, on peut rechercher des fichiers avec le builtin *find* et les filter avec *filter*. Ainsi pour sélectionner tous les fichiers *txt* saufs ceux du répertoire *build*, on pourra écrire :
+Par exemple, on peut rechercher des fichiers avec *find* et les filter avec *filter*. Ainsi pour sélectionner tous les fichiers *txt* saufs ceux du répertoire *build*, on pourra écrire :
 
 ```yaml
-targets:
-
-  script:
-    steps:
-    - 'files = filter(find(".", "**/*.txt"), "build/**/*")'
+- 'files = filter(find(".", "**/*.txt"), "build/**/*")'
 ```
 
 La propriété *files* contiendra une liste des fichiers trouvés.
@@ -478,7 +461,7 @@ Il est possible de définir ses propres builtins dans un source Anko et de les c
 Héritage de build
 -----------------
 
-On peut étendre un fichier de build en ajoutant une déclaration extends. Supposons que nous ayons le fichier de build suivant pour définir le répertoire du build :
+On peut étendre un fichier de build en ajoutant une déclaration extends.
 
 ```yaml
 properties:
@@ -507,8 +490,6 @@ Dans ce fichier de build, le propriété *BUILD_DIR* est définie et la cible *c
 Nous pouvons aussi surcharger dans le fils les propriétés définies dans le fichier de build parent. Ainsi pour changer le répertoire du build, nous pouvons écrire :
 
 ```yaml
-extends: ./buildir.yml
-
 properties:
   BUILD_DIR: 'target'
 ```
@@ -521,7 +502,7 @@ extends: ./buildir.yml
 targets:
 
   clean:
-    doc: Clean generated files and crate build directory
+    doc: Clean generated files and create build directory
     steps:
     - super:
     - mkdir: =BUILD_DIR
@@ -536,11 +517,11 @@ Entrepôt NeON
 
 L'entrepôt est l'endroit où se trouvent généralement les fichiers de build parents et les templates NeON. Par défaut il est dans le répertoire *~/.neon/*. Un plugin est un projet Github identifié par le nom du propriétaire et du projet.
 
-Ainsi mon plugin pour mes fichiers de build parents se trouvent à l'adresse <http://github.com/c4s4/build> et son nom NeON est donc *c4s4/build*. On fera donc référence à un fichier de build parent par `extends: c4s4/build/golang.yml` par exemple.
+Ainsi mon plugin pour mes fichiers de build parents se trouve à l'adresse <http://github.com/c4s4/build> et son nom NeON est donc *c4s4/build*. On fera donc référence à un fichier de build parent par `extends: c4s4/build/golang.yml` par exemple.
 
-Pour installer un plugin, on tapera sur la ligne de commande `neon -install c4s4/build` par exemple. NeON va alors cloner le projet Github se trouvant à l'adresse <http://github.com/c4s4/build> dans le répertoire *~/.neon/c4s4/build*.
+Pour installer ce plugin, on tapera sur la ligne de commande `neon -install c4s4/build`. NeON va alors cloner le projet Github se trouvant à l'adresse <http://github.com/c4s4/build> dans le répertoire *~/.neon/c4s4/build*.
 
-Par défaut, on se trouvera sur la branche *master* du plugin, ce qui est souvent ce que l'on veut. On peut cependant changer de branche par une commande Git. Pour passer sur *develop*, on tapera par exmple `git checkout develop` dans le répertoire du plugin. On peut aussi sortir un tag particulier, avec `git checkout 1.2.3` par exemple.
+Par défaut, on clonera la branche *master* du plugin, ce qui est souvent ce que l'on veut. On peut cependant changer de branche par une commande Git. Pour passer sur *develop*, on tapera par exemple `git checkout develop` dans le répertoire du plugin. On peut aussi sortir un tag particulier, avec `git checkout 1.2.3` par exemple.
 
 ---
 
@@ -576,37 +557,28 @@ build.yml  CHANGELOG.yml  img  README.md  res
 On peut créer ses propres templates. Ce sont des fichiers de build standards avec l'extension *.tpl*. Par exemple, voici les sources du template des slides :
 
 ```yaml
-default: template
-
-targets:
-
-  template:
-    doc: Generate Slides project
-    steps:
-    # prompt project name, create directory and copy files
-    - print: 'This template will generate a Slides project'
-    - prompt:  'Name of this project'
-      to:      'name'
-      pattern: '^[\w-_]+$'
-      error:   'Project name must be made of letters, numbers, - and _'
-    - if: 'exists(joinpath(_HERE, name))'
-      then:
-      - throw: 'Project directory already exists'
-    - mkdir: '={_HERE}/={name}'
-    - copy:  '**/*'
-      dir:   '={_BASE}/slides'
-      todir: '={_HERE}/={name}'
-    # rename project in build file
-    - replace: '={_HERE}/={name}/build.yml'
-      with:    {"'Slides'": =name}
-    - print: "Project generated in '={name}' directory"
+# prompt project name, create directory and copy files
+- print: 'This template will generate a Slides project'
+- prompt:  'Name of this project'
+  to:      'name'
+  pattern: '^[\w-_]+$'
+  error:   'Project name must be made of letters, numbers, - and _'
+- if: 'exists(joinpath(_HERE, name))'
+  then:
+  - throw: 'Project directory already exists'
+- mkdir: '={_HERE}/={name}'
+- copy:  '**/*'
+  dir:   '={_BASE}/slides'
+  todir: '={_HERE}/={name}'
+# rename project in build file
+- replace: '={_HERE}/={name}/build.yml'
+  with:    {"'Slides'": =name}
+- print: "Project generated in '={name}' directory"
 ```
 
 ---
 
 ### Fonctionnalités avancées
-
-Mes besoins pour certains projets m'ont poussé à développer des fonctionnalités avancées :
 
 #### Singleton
 
@@ -616,7 +588,7 @@ Il est possible de s'assurer qu'une seule instance de build tourne sur une machi
 singleton: 12345
 ```
 
-C'est utile lorsque le build utilise une ressource qui ne peut être partagée. Si on lançait plusieurs builds en parallèle, cela conduirait alors à une erreur. Si on lance une deuxième instance, on a lors le message d'erreur suivant :
+C'est utile lorsque le build utilise une ressource qui ne peut être partagée. Si on lançait plusieurs builds en parallèle, cela conduirait alors à une erreur. Si on lance une deuxième instance, on a le message d'erreur suivant :
 
 ```bash
 $ neon
@@ -633,30 +605,23 @@ Nos machines actuelles comportent souvent plusieurs cœurs par processeur. Or Ne
 C'est possible avec la tâche *threads*. Considérons l'exemple ci-dessous :
 
 ```yaml
-default: test
-
-targets:
-
-  test:
-    doc: Test thread task
-    steps:
-    # compute squares of 10 first integers in threads and put them in _output
-    - threads: =_NCPU
-      input:   =range(10)
-      steps:
-      - '_output = _input * _input'
-      - print: '#{_input}^2 = #{_output}'
-    # print squares on the console
-    - print: '#{_output}'
+# compute squares of 10 first integers in threads and put them in _output
+- threads: =_NCPU
+  input:   =range(10)
+  steps:
+  - '_output = _input * _input'
+  - print: '#{_input}^2 = #{_output}'
+# print squares on the console
+- print: '#{_output}'
 ```
 
 Nous lançons ici en parallèle autant de threads qu'il y a de cœurs dans le CPU : `threads: =_NCPU`.
 
+En entrée, nous prenons la liste des 10 premiers entiers : `input: =range(10)`. Cette liste sera consommée par l'ensemble des threads.
+
 ---
 
 #### Builds parallèles (suite)
-
-En entrée, nous prenons la liste des 10 premiers entiers : `input: =range(10)`. Cette liste sera consommée par chacun des threads.
 
 Viennent ensuite les étapes exécutées par chaque thread :
 
@@ -666,7 +631,7 @@ steps:
 - print: '#{_input}^2 = #{_output}'
 ```
 
-Nous calculons la *sortie* du thread qui est la carré de son *entrée*. Les valeurs envoyées par chaque thread dans *_output* se retrouvera (dans un ordre indéterminé) dans l'*_output* après la tâche *thread*.
+Nous calculons la *sortie* du thread qui est la carré de son *entrée*. Les valeurs envoyées par chaque thread dans *_output* se retrouvera (dans un ordre indéterminé) dans l'*_output* après la tâche *threads*.
 
 Si nous exécutons ce build, nous obtenons, per exemple :
 
@@ -675,6 +640,7 @@ $ n
 Build /home/casa/dsk/build.yml
 ------------------------------------------------------------------------ test --
 0^2 = 0
+1^2 = 1
 ...
 9^2 = 81
 [0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
@@ -683,11 +649,21 @@ OK
 
 ---
 
+#### Builds parallèles (suite)
+
+Chaque thread obtient du build une **copie** du contexte du build (avec ses propriétés). Il peut modifier à sa guise ce contexte, cela n'affectera pas les autres threads qui ont leur propre contexte. Cependant, toutes les modifications au contexte d'un thread **sont perdues**, sauf ce qui a été envoyé à *_output*.
+
+Lorsqu'on utilise les threads, il faut prendre garde à **ne pas changer le répertoire courant** car cela affecte tous les threads.
+
+---
+
 Conclusion
 ==========
 
-Ce projet est sous licence Apache 2.0, donc c'est aussi le vôtre ! Toute contribution est la bienvenue.
+Ce projet est sous licence Apache 2.0, donc c'est **aussi le vôtre !** Toute contribution est la bienvenue.
 
 Merci pour votre attention.
 
 Slides disponibles à l'adresse : <http://sweetohm.net/slides/slides-neon/>.
+
+<casa@sweetohm.net>
