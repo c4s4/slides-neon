@@ -534,4 +534,160 @@ La tâche `super` permet ainsi d'invoquer la cible du parent.
 Entrepôt NeON
 -------------
 
-Cet entrepôt se trouve par défaut dans le répertoire *~/.neon/*. On peut y installer des 
+L'entrepôt est l'endroit où se trouvent généralement les fichiers de build parents et les templates NeON. Par défaut il est dans le répertoire *~/.neon/*. Un plugin est un projet Github identifié par le nom du propriétaire et du projet.
+
+Ainsi mon plugin pour mes fichiers de build parents se trouvent à l'adresse <http://github.com/c4s4/build> et son nom NeON est donc *c4s4/build*. On fera donc référence à un fichier de build parent par `extends: c4s4/build/golang.yml` par exemple.
+
+Pour installer un plugin, on tapera sur la ligne de commande `neon -install c4s4/build` par exemple. NeON va alors cloner le projet Github se trouvant à l'adresse <http://github.com/c4s4/build> dans le répertoire *~/.neon/c4s4/build*.
+
+Par défaut, on se trouvera sur la branche *master* du plugin, ce qui est souvent ce que l'on veut. On peut cependant changer de branche par une commande Git. Pour passer sur *develop*, on tapera par exmple `git checkout develop` dans le répertoire du plugin. On peut aussi sortir un tag particulier, avec `git checkout 1.2.3` par exemple.
+
+---
+
+Templates NeON
+--------------
+
+Un plugin peut aussi comporter des templates. Ce sont des moyens de créer des projets rapidement. Par exemple, pour créer de nouveaux slides, je tape :
+
+```bash
+$ neon -template slides
+Build /home/casa/.neon/c4s4/build/slides.tpl
+-------------------------------------------------------------------- template --
+This template will generate a Slides project
+Name of this project: test
+Making directory '/home/casa/dsk/test'
+Copying 17 file(s)
+Replacing text in file '/home/casa/dsk/test/build.yml'
+Project generated in 'test' directory
+OK
+```
+
+Ceci a créé un répertoire *test*, du nom du projet que j'ai saisi en ligne de commande. Ce répertoire contient un nouveau projet de slides, avec fichiers d'exemple et de build.
+
+```bash
+$ ls
+build.yml  CHANGELOG.yml  img  README.md  res
+```
+
+---
+
+### Fichiers de template
+
+On peut créer ses propres templates. Ce sont des fichiers de build standards avec l'extension *.tpl*. Par exemple, voici les sources du template des slides :
+
+```yaml
+default: template
+
+targets:
+
+  template:
+    doc: Generate Slides project
+    steps:
+    # prompt project name, create directory and copy files
+    - print: 'This template will generate a Slides project'
+    - prompt:  'Name of this project'
+      to:      'name'
+      pattern: '^[\w-_]+$'
+      error:   'Project name must be made of letters, numbers, - and _'
+    - if: 'exists(joinpath(_HERE, name))'
+      then:
+      - throw: 'Project directory already exists'
+    - mkdir: '={_HERE}/={name}'
+    - copy:  '**/*'
+      dir:   '={_BASE}/slides'
+      todir: '={_HERE}/={name}'
+    # rename project in build file
+    - replace: '={_HERE}/={name}/build.yml'
+      with:    {"'Slides'": =name}
+    - print: "Project generated in '={name}' directory"
+```
+
+---
+
+### Fonctionnalités avancées
+
+Mes besoins pour certains projets m'ont poussé à développer des fonctionnalités avancées :
+
+#### Singleton
+
+Il est possible de s'assurer qu'une seule instance de build tourne sur une machine avec une entrée *singleton* à la racine du fichier de build. Elle comporte un numéro de port, qui sera ouvert en lecture en début de build et fermée lorsque le build est terminé. A noter que le numéro de port doit être supérieur à 1024 si on ne lance pas le build en *root*.
+
+```yaml
+singleton: 12345
+```
+
+C'est utile lorsque le build utilise une ressource qui ne peut être partagée. Si on lançait plusieurs builds en parallèle, cela conduirait alors à une erreur. Si on lance une deuxième instance, on a lors le message d'erreur suivant :
+
+```bash
+$ neon
+Build /home/casa/dsk/build.yml
+ERROR listening singleton port: listen tcp :12345: bind: address already in use
+```
+
+---
+
+#### Builds parallèles
+
+Nos machines actuelles comportent souvent plusieurs cœurs par processeur. Or NeON ne s'exécute par défaut que sur un seul d'entre eux, de manière séquentielle. Cependant, il arrive parfois que l'on souhaite effectuer plusieurs tâches en parallèle.
+
+C'est possible avec la tâche *threads*. Considérons l'exemple ci-dessous :
+
+```yaml
+default: test
+
+targets:
+
+  test:
+    doc: Test thread task
+    steps:
+    # compute squares of 10 first integers in threads and put them in _output
+    - threads: =_NCPU
+      input:   =range(10)
+      steps:
+      - '_output = _input * _input'
+      - print: '#{_input}^2 = #{_output}'
+    # print squares on the console
+    - print: '#{_output}'
+```
+
+Nous lançons ici en parallèle autant de threads qu'il y a de cœurs dans le CPU : `threads: =_NCPU`.
+
+---
+
+#### Builds parallèles (suite)
+
+En entrée, nous prenons la liste des 10 premiers entiers : `input: =range(10)`. Cette liste sera consommée par chacun des threads.
+
+Viennent ensuite les étapes exécutées par chaque thread :
+
+```yaml
+steps:
+- '_output = _input * _input'
+- print: '#{_input}^2 = #{_output}'
+```
+
+Nous calculons la *sortie* du thread qui est la carré de son *entrée*. Les valeurs envoyées par chaque thread dans *_output* se retrouvera (dans un ordre indéterminé) dans l'*_output* après la tâche *thread*.
+
+Si nous exécutons ce build, nous obtenons, per exemple :
+
+```bash
+$ n
+Build /home/casa/dsk/build.yml
+------------------------------------------------------------------------ test --
+0^2 = 0
+...
+9^2 = 81
+[0, 1, 4, 9, 16, 25, 36, 49, 64, 81]
+OK
+```
+
+---
+
+Conclusion
+==========
+
+Ce projet est sous licence Apache 2.0, donc c'est aussi le vôtre ! Toute contribution est la bienvenue.
+
+Merci pour votre attention.
+
+Slides disponibles à l'adresse : <http://sweetohm.net/slides/slides-neon/>.
