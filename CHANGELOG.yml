@@ -6,6 +6,10 @@
 #   notes:
 #   - "Talk RMLL, 2018-07-09 at 11:30, ESCARPE - Amphi 29."
 
+- version: 1.0.0-rc-3
+  date:    2018-07-07
+  summary: Fixes
+
 - version: 1.0.0-rc-2
   date:    2018-07-01
   summary: Fixes

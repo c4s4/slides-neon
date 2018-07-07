@@ -15,8 +15,8 @@ Ayant eu l'occasion d'utiliser de nombreux systèmes de build (Make, Ant, Maven,
 NeON est le successeur de Bee entièrement réécrit avec le langage Go. Il est:
 
 - Rapide car Go est compilé en natif.
-- Indépendant de la plateforme car porté sur 20 combinaisons OS/plateforme.
-- Scriptable avec le langage de script Anko.
+- Indépendant de la plateforme et porté sur 20 combinaisons OS/plateforme.
+- Scriptable avec le langage Anko (<http://github.com/mattn/anko>).
 - Extensible par héritage de build.
 
 Cette conférence présente NeON ainsi que des exemples de mise en œuvre en production.
@@ -58,7 +58,7 @@ D'autre part, l'installation de la machine virtuelle Ruby était un frein série
 Les débuts de NeON
 ------------------
 
-La même année que j'arrêtais le développement de Bee, j'ai découvert le langage *Go*. J'y ai vite vu une solution aux problèmes de Bee : pas de VM à installer et pas de soucis de maintenance au fil des versions de *Go*.
+La même année que j'arrêtais le développement de Bee, j'ai découvert le langage de programmation *Go*. J'y ai vite vu une solution aux problèmes de Bee : pas de VM à installer et pas de soucis de maintenance au fil des versions de *Go*.
 
 J'ai dû cependant attendre jusque fin *2016* avant de trouver une solution à deux problèmes auxquels je m'étais heurté lors de mes première tentatives de portage de Bee en *Go* :
 
@@ -288,7 +288,7 @@ targets:
     - delete: =BUILD_DIR
 ```
 
-Si on tape `neon clean`:
+On exécutera la cible *clean* avec la commande `neon clean`:
 
 ```bash
 $ neon clean
@@ -297,8 +297,6 @@ Build /home/casa/dsk/build.yml
 Deleting 1 file(s) or directory(ies)
 OK
 ```
-
-Nous voyons que la cible *clean* a été exécutée.
 
 ---
 
@@ -320,7 +318,7 @@ targets:
     - delete: =BUILD_DIR
 ```
 
-Une cible d'un fichier de build comporte les champs suivants :
+La cible d'un fichier de build comporte les champs suivants :
 
 - **doc** permet de documenter la cible et est affiché avec l'option *-info*.
 - **depends** indique les cibles à exécuter auparavant.
@@ -332,7 +330,7 @@ Les tâches sont comparables aux instructions d'un programme. Elles peuvent êtr
 
 ### Tâches NeON
 
-Ces tâches sont prédéfinies dans le moteur NeON, elles permettent de gérer les fichiers (copie, effacement, déplacement), les archives (créer et décompresser des fichiers *tar*, *targz* et *zip*), les répertoires (création, effacement) ou des liens. Ceci permet de réaliser ces opérations de manière indépendante du système d'exploitation.
+Ces tâches sont prédéfinies dans le moteur NeON, elles permettent de **gérer les fichiers** (copie, effacement, déplacement), les **archives** (créer et décompresser des fichiers *tar*, *targz* et *zip*), les **répertoires** (création, effacement) ou des **liens**. Ceci permet de réaliser ces opérations de manière indépendante du système d'exploitation.
 
 Par exemple, pour effacer tous les fichiers *.so* du répertoire *build*, on pourrait écrire :
 
@@ -350,7 +348,7 @@ targets:
 
 #### Tâches NeON (suite)
 
-Il existe aussi des tâches logiques qui permettent de réaliser des tests ou d'itérer sur des collections. Par exemple, pour itérer sur tous les fichiers *.md* du répertoire *md*, on peut écrire :
+Il existe aussi des tâches logiques qui permettent de réaliser des **tests** ou d'**itérer** sur des collections. Par exemple, pour itérer sur tous les fichiers *.md* du répertoire *md*, on peut écrire :
 
 ```yaml
 - for: 'file'
@@ -428,7 +426,7 @@ Les tâches *shell* exécutent des commande système. Par exemple, pour exécute
 - $: 'ls'
 ```
 
-Pour exécuter des commandes qui soient compatibles avec toutes les plateformes, il est recommandé d'écrire ses tâches sous forme de listes :
+Pour exécuter des commandes qui soient compatibles avec toutes les plateformes, il est recommandé d'écrire ces tâches sous forme de listes :
 
 ```yaml
 - $: ['java', '-jar', 'my.jar', 'Hello World!']
@@ -515,7 +513,7 @@ La tâche `super` permet ainsi d'invoquer la cible du parent.
 Entrepôt NeON
 -------------
 
-L'entrepôt est l'endroit où se trouvent généralement les fichiers de build parents et les templates NeON. Par défaut il est dans le répertoire *~/.neon/*. Un plugin est un projet Github identifié par le nom du propriétaire et du projet.
+L'entrepôt est l'endroit où se trouvent généralement les fichiers de build parents et les templates NeON. Par défaut il est dans le répertoire *~/.neon/*. Un plugin est un projet Github identifié par le nom du compte et celui du projet.
 
 Ainsi mon plugin pour mes fichiers de build parents se trouve à l'adresse <http://github.com/c4s4/build> et son nom NeON est donc *c4s4/build*. On fera donc référence à un fichier de build parent par `extends: c4s4/build/golang.yml` par exemple.
 
@@ -657,13 +655,15 @@ Lorsqu'on utilise les threads, il faut prendre garde à **ne pas changer le rép
 
 ---
 
-Conclusion
-==========
+Merci pour votre attention
+==========================
 
-Ce projet est sous licence Apache 2.0, donc c'est **aussi le vôtre !** Toute contribution est la bienvenue.
+## Des Questions ?
 
-Merci pour votre attention.
+### Ce projet est sous licence Apache 2.0, donc c'est **aussi le vôtre !** Toute contribution est la bienvenue sur <http://github.com/c4s4/neon>
 
-Slides disponibles à l'adresse : <http://sweetohm.net/slides/slides-neon/>.
+### Slides disponibles à l'adresse <http://sweetohm.net/slides/slides-neon>
 
-<casa@sweetohm.net>
+### <casa@sweetohm.net>
+
+### <http://sweetohm.net>
