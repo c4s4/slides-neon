@@ -420,7 +420,7 @@ Le champ **dir** indique le répertoire racine des globs, **exclude** liste les 
 
 ### Les tâches shell
 
-Les tâches *shell* exécutent des commande système. Par exemple, pour exécuter la commande *ls*, on pourrait écrire :
+Les tâches *shell* exécutent des commandes système. Par exemple, pour exécuter la commande *ls*, on pourrait écrire :
 
 ```yaml
 - $: 'ls'
