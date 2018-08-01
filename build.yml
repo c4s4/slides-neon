@@ -5,5 +5,5 @@ extends:
 
 properties:
   TITLE:   "L'Outil de Build NeON"
-  # OPTIONS: "{ratio: '4:3'}"
-  OPTIONS: "{ratio: '16:9'}"
+  OPTIONS: "{ratio: '4:3'}"
+  # OPTIONS: "{ratio: '16:9'}"
