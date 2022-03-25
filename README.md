@@ -393,7 +393,7 @@ Examples:
     - print: 'duration: ={duration}s'
 ```
 
-On peut aussi obtenir de l'aide pour toutes les tâches disponibles [sur la page de référence des tâches](https://github.com/c4s4/neon/blob/master/doc/reference.md).
+On peut aussi obtenir de l'aide pour toutes les tâches disponibles [sur la page de référence des tâches](https://github.com/c4s4/neon/blob/master/doc/tasks.md).
 
 ---
 

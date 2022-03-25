@@ -1,7 +1,6 @@
 # NeON Build File (http://github.com/c4s4/neon)
 
-extends:
-- c4s4/build/slides.yml
+extends: slides
 
 properties:
   TITLE:   "L'Outil de Build NeON"
