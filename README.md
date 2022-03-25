@@ -169,13 +169,13 @@ targets:
   bin:
     doc: Build Go tool
     steps:
-    - mkdir: '=BUILD_DIR'
+    - mkdir: =BUILD_DIR
     - $: ['go', 'build', '-o', '={BUILD_DIR}/={NAME}']
 
   clean:
     doc: Clean generated files
     steps:
-    - delete: '=BUILD_DIR'
+    - delete: =BUILD_DIR
 ```
 
 ---
