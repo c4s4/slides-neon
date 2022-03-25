@@ -519,7 +519,7 @@ Ainsi mon plugin pour mes fichiers de build parents se trouve à l'adresse <http
 
 Pour installer ce plugin, on tapera sur la ligne de commande `neon -install c4s4/build`. NeON va alors cloner le projet Github se trouvant à l'adresse <http://github.com/c4s4/build> dans le répertoire *~/.neon/c4s4/build*.
 
-Par défaut, on clonera la branche *master* du plugin, ce qui est souvent ce que l'on veut. On peut cependant changer de branche par une commande Git. Pour passer sur *develop*, on tapera par exemple `git checkout develop` dans le répertoire du plugin. On peut aussi sortir un tag particulier, avec `git checkout 1.2.3` par exemple.
+Par défaut, on clonera la branche principale du plugin, ce qui est souvent ce que l'on veut. On peut cependant changer de branche par une commande Git. Pour passer sur *develop*, on tapera par exemple `git checkout develop` dans le répertoire du plugin. On peut aussi sortir un tag particulier, avec `git checkout 1.2.3` par exemple.
 
 ---
 
