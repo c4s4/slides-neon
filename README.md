@@ -1,5 +1,4 @@
-L'Outil de Build NeON
-=====================
+# L'Outil de Build NeON
 
 Michel Casabianca
 
@@ -7,8 +6,7 @@ casa@sweetohm.net
 
 ---
 
-Proposition RMLL
-----------------
+## Proposition RMLL
 
 Ayant eu l'occasion d'utiliser de nombreux systèmes de build (Make, Ant, Maven, et Rake), j'ai rêvé au fil des années le système de build idéal. En 2006, j'ai sauté le pas et développé Bee, mais les difficultés à la maintenir au fil des versions de Ruby m'ont contraint à en abandonner le support en 2014.
 
@@ -25,8 +23,7 @@ Projet sur Github sous licence Apache 2.0 : http://github.com/c4s4/neon
 
 ---
 
-Pourquoi NeON ?
----------------
+## Pourquoi NeON ?
 
 Il existe bien des systèmes de build, pourquoi en concevoir un ènième ? Parce que je n'étais pas satisfait de ceux que j'ai pu utiliser : **make**, **ant**, **maven**, **rake**.
 
@@ -42,8 +39,7 @@ En les utilisant et constatant leurs limites, j'ai rêvé d'un système de build
 
 ---
 
-L'Ancêtre Bee
--------------
+## L'Ancêtre Bee
 
 En 2006 je me suis lancé dans la conception de [Bee](https://github.com/c4s4/bee/), un outil de build qui répondait à cette liste de vœux. Il était implémenté en Ruby, le langage de script était donc Ruby lui même et la distribution des fichiers de build se faisait sous forme de *gemmes Ruby*.
 
@@ -55,8 +51,7 @@ D'autre part, l'installation de la machine virtuelle Ruby était un frein série
 
 ---
 
-Les débuts de NeON
-------------------
+## Les débuts de NeON
 
 La même année que j'arrêtais le développement de Bee, j'ai découvert le langage de programmation *Go*. J'y ai vite vu une solution aux problèmes de Bee : pas de VM à installer et pas de soucis de maintenance au fil des versions de *Go*.
 
@@ -69,8 +64,7 @@ J'ai finalement commencé le développement fin 2016 et publié une première re
 
 ---
 
-Format des fichiers de build
-----------------------------
+## Format des fichiers de build
 
 Les fichiers de build sont au format *YAML* (pour *YAML Ain't Markup Language*). Ce format a l'avantage d'être naturel et léger. Par exemple, on écrira une liste de la manière suivante :
 
@@ -134,8 +128,7 @@ Bien sûr la syntaxe de YAML est bien plus riche que celle décrite ici, et je v
 
 ---
 
-Structure des fichiers de build
--------------------------------
+## Structure des fichiers de build
 
 Un fichier de build est un dictionnaire YAML pouvant comporter les entrées suivantes :
 
@@ -271,8 +264,7 @@ OK
 
 ---
 
-Cibles du fichier de build
---------------------------
+## Cibles du fichier de build
 
 Les cibles du build sont comparables à des fonctions. On les passe sur la ligne de commande. Ainsi avec le fichier de build suivant :
 
@@ -456,8 +448,7 @@ Il est possible de définir ses propres builtins dans un source Anko et de les c
 
 ---
 
-Héritage de build
------------------
+## Héritage de build
 
 On peut étendre un fichier de build en ajoutant une déclaration extends.
 
@@ -510,8 +501,7 @@ La tâche `super` permet ainsi d'invoquer la cible du parent.
 
 ---
 
-Entrepôt NeON
--------------
+## Entrepôt NeON
 
 L'entrepôt est l'endroit où se trouvent généralement les fichiers de build parents et les templates NeON. Par défaut il est dans le répertoire *~/.neon/*. Un plugin est un projet Github identifié par le nom du compte et celui du projet.
 
@@ -523,8 +513,7 @@ Par défaut, on clonera la branche principale du plugin, ce qui est souvent ce q
 
 ---
 
-Templates NeON
---------------
+## Templates NeON
 
 Un plugin peut aussi comporter des templates. Ce sont des moyens de créer des projets rapidement. Par exemple, pour créer de nouveaux slides, je tape :
 
