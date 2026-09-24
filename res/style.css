@@ -1,8 +1,8 @@
 @import url(font-yanone-kaffeesatz.css);
-@import url(font-droid-serif.css);
+@import url(font-noto-serif.css);
 @import url(font-ubuntu-mono.css);
 
-body { font-family: 'Droid Serif'; }
+body { font-family: 'Noto Serif'; }
 h1, h2, h3 {
   font-family: 'Yanone Kaffeesatz';
   font-weight: normal;
@@ -32,3 +32,10 @@ table, th, td {
   padding: 8px;
   background-color: #F5F5F5;
 }
+
+/* restore the font sizes remark dropped from its default stylesheet in 0.15 */
+.remark-slide-content { font-size: 20px; }
+.remark-slide-content h1 { font-size: 55px; }
+.remark-slide-content h2 { font-size: 45px; }
+.remark-slide-content h3 { font-size: 35px; }
+.remark-code { font-size: 18px; }
